@@ -210,7 +210,7 @@ async function parseHomeworkWithAI() {
   renderAIHomework();
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('/.netlify/functions/parse-homework', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

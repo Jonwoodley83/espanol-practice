@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Español — Spanish Practice</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">es<span>pañol</span></div>
+  <div class="header-stats">
+    <div class="stat"><span class="val" id="s-pts">0</span><span class="lbl">points</span></div>
+    <div class="stat"><span class="val" id="s-str">0</span><span class="lbl">streak</span></div>
+    <div class="stat"><span class="val" id="s-cor">0</span><span class="lbl">correct</span></div>
+    <div class="stat"><span class="val" id="s-tot">0</span><span class="lbl">answered</span></div>
+    <div class="streak-badge" id="streak-badge">🔥 0 streak!</div>
+  </div>
+</header>
+
+<nav id="main-nav">
+  <button class="nav-btn active" data-mode="home" onclick="switchMode('home')">🏠 Home</button>
+
+  <!-- Tenses dropdown -->
+  <div class="nav-dropdown" id="dd-tenses" onmouseleave="closeDD('dd-tenses')">
+    <button class="nav-btn nav-dropdown-trigger" onmouseenter="openDD('dd-tenses')">Tenses <span class="dd-arrow">▾</span></button>
+    <div class="nav-dropdown-menu" onmouseenter="keepDD('dd-tenses')">
+      <button class="dd-item" onclick="switchMode('reference');closeDD('dd-tenses')">
+        <span class="dd-item-icon">📚</span>
+        <span><strong>Tense guide</strong><span class="dd-item-desc">All 8 tenses — reference &amp; examples</span></span>
+      </button>
+      <button class="dd-item" onclick="switchMode('tense');closeDD('dd-tenses')">
+        <span class="dd-item-icon">🔍</span>
+        <span><strong>Tense spotter</strong><span class="dd-item-desc">Identify which tense is being used</span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Conjugation dropdown -->
+  <div class="nav-dropdown" id="dd-conj" onmouseleave="closeDD('dd-conj')">
+    <button class="nav-btn nav-dropdown-trigger" onmouseenter="openDD('dd-conj')">Conjugation <span class="dd-arrow">▾</span></button>
+    <div class="nav-dropdown-menu" onmouseenter="keepDD('dd-conj')">
+      <button class="dd-item" onclick="switchMode('conjguide');closeDD('dd-conj')">
+        <span class="dd-item-icon">📖</span>
+        <span><strong>Conjugation guide</strong><span class="dd-item-desc">How conjugation works, by tense</span></span>
+      </button>
+      <button class="dd-item" onclick="switchMode('conjugation');closeDD('dd-conj')">
+        <span class="dd-item-icon">🔤</span>
+        <span><strong>Conjugation drill</strong><span class="dd-item-desc">Practice with 4 difficulty levels</span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Topics dropdown -->
+  <div class="nav-dropdown" id="dd-topics" onmouseleave="closeDD('dd-topics')">
+    <button class="nav-btn nav-dropdown-trigger" onmouseenter="openDD('dd-topics')">Topics <span class="dd-arrow">▾</span></button>
+    <div class="nav-dropdown-menu" onmouseenter="keepDD('dd-topics')">
+      <button class="dd-item" onclick="switchMode('topics');openTopic('time');closeDD('dd-topics')">
+        <span class="dd-item-icon">🕐</span>
+        <span><strong>Time &amp; Numbers</strong><span class="dd-item-desc">Numbers, telling the time, parts of day</span></span>
+      </button>
+      <button class="dd-item" onclick="switchMode('topics');openTopic('dates');closeDD('dd-topics')">
+        <span class="dd-item-icon">📅</span>
+        <span><strong>Days, Months &amp; Seasons</strong><span class="dd-item-desc">Calendar vocabulary</span></span>
+      </button>
+      <button class="dd-item" onclick="switchMode('topics');openTopic('food');closeDD('dd-topics')">
+        <span class="dd-item-icon">🍽️</span>
+        <span><strong>Food &amp; Drink</strong><span class="dd-item-desc">Meals, food, restaurant phrases</span></span>
+      </button>
+      <button class="dd-item" onclick="switchMode('topics');openTopic('family');closeDD('dd-topics')">
+        <span class="dd-item-icon">👨‍👩‍👧</span>
+        <span><strong>Family</strong><span class="dd-item-desc">Family members &amp; relationships</span></span>
+      </button>
+      <button class="dd-item" onclick="switchMode('topics');openTopic('travel');closeDD('dd-topics')">
+        <span class="dd-item-icon">✈️</span>
+        <span><strong>Travel</strong><span class="dd-item-desc">Transport, directions, accommodation</span></span>
+      </button>
+      <button class="dd-item" onclick="switchMode('topics');openTopic('professions');closeDD('dd-topics')">
+        <span class="dd-item-icon">👨‍💼</span>
+        <span><strong>Professions</strong><span class="dd-item-desc">Jobs and work phrases</span></span>
+      </button>
+      <button class="dd-item" onclick="switchMode('topics');openTopic('home');closeDD('dd-topics')">
+        <span class="dd-item-icon">🏠</span>
+        <span><strong>Home &amp; Places</strong><span class="dd-item-desc">Rooms, furniture, places in town</span></span>
+      </button>
+    </div>
+  </div>
+
+  <button class="nav-btn" data-mode="builder"  onclick="switchMode('builder')">Sentence builder</button>
+  <button class="nav-btn" data-mode="story"    onclick="switchMode('story')">Mini story</button>
+  <button class="nav-btn" data-mode="verbhunt" onclick="switchMode('verbhunt')">🎯 Verb hunt</button>
+  <button class="nav-btn" data-mode="describe" onclick="switchMode('describe')">🧍 Describe</button>
+  <button class="nav-btn" data-mode="homework" onclick="switchMode('homework')">📝 Homework</button>
+  <button class="nav-btn" data-mode="aihomework" onclick="switchMode('aihomework')">🤖 AI Test Builder</button>
+</nav>
+
+<main>
+  <div id="screen-home" class="screen active">
+    <div class="hero">
+      <h1>Practice your<br><span>Spanish</span></h1>
+      <p>Verbs, tenses, and sentences — reinforcing exactly what you've been learning in class.</p>
+    </div>
+    <div class="mode-grid">
+      <div class="mode-card" onclick="switchMode('reference')"><div class="mode-icon">📚</div><div class="mode-title">Tense guide</div><div class="mode-desc">All 8 tenses — endings, examples, time words.</div></div>
+      <div class="mode-card" onclick="switchMode('tense')"><div class="mode-icon">🔍</div><div class="mode-title">Tense spotter</div><div class="mode-desc">Read a sentence and identify which tense is used.</div></div>
+      <div class="mode-card" onclick="switchMode('conjguide')"><div class="mode-icon">📖</div><div class="mode-title">Conjugation guide</div><div class="mode-desc">How conjugation works across all tenses.</div></div>
+      <div class="mode-card" onclick="switchMode('conjugation')"><div class="mode-icon">🔤</div><div class="mode-title">Conjugation drill</div><div class="mode-desc">Four levels — present only up to all 8 tenses.</div></div>
+      <div class="mode-card" onclick="switchMode('topics')"><div class="mode-icon">🗂️</div><div class="mode-title">Topics</div><div class="mode-desc">Vocabulary by theme — flashcards and quizzes.</div></div>
+      <div class="mode-card" onclick="switchMode('builder')"><div class="mode-icon">🧩</div><div class="mode-title">Sentence builder</div><div class="mode-desc">Arrange tiles into the correct Spanish sentence.</div></div>
+      <div class="mode-card" onclick="switchMode('verbhunt')"><div class="mode-icon">🎯</div><div class="mode-title">Verb hunt</div><div class="mode-desc">50 verb tiles — five modes of play.</div></div>
+      <div class="mode-card" onclick="switchMode('story')"><div class="mode-icon">📖</div><div class="mode-title">Mini story</div><div class="mode-desc">Choose the right verb form as the story unfolds.</div></div>
+      <div class="mode-card" onclick="switchMode('describe')"><div class="mode-icon">🧍</div><div class="mode-title">Describe the person</div><div class="mode-desc">A random character appears — describe 10 things about them in Spanish.</div></div>
+      <div class="mode-card" onclick="switchMode('homework')"><div class="mode-icon">📝</div><div class="mode-title">Homework tests</div><div class="mode-desc">Tests built from your teacher's notes.</div></div>
+      <div class="mode-card" onclick="switchMode('aihomework')"><div class="mode-icon">🤖</div><div class="mode-title">AI Test Builder</div><div class="mode-desc">Paste teacher notes and Claude automatically generates an interactive test.</div></div>
+    </div>
+  </div>
+
+  <div id="screen-reference"   class="screen"></div>
+  <div id="screen-tense"       class="screen"></div>
+  <div id="screen-conjguide"   class="screen"></div>
+  <div id="screen-conjugation" class="screen"></div>
+  <div id="screen-topics"      class="screen"></div>
+  <div id="screen-builder"     class="screen"></div>
+  <div id="screen-story"       class="screen"></div>
+  <div id="screen-verbhunt"    class="screen"></div>
+  <div id="screen-describe"   class="screen"></div>
+  <div id="screen-homework"    class="screen"></div>
+  <div id="screen-aihomework" class="screen"></div>
+</main>
+
+<script src="data/content.js"></script>
+<script src="js/app.js"></script>
+<script src="js/reference.js"></script>
+<script src="js/conjguide.js"></script>
+<script src="js/topics.js"></script>
+<script src="js/verbhunt.js"></script>
+<script src="js/describe.js"></script>
+<script src="js/aihomework.js"></script>
+<script src="js/homework.js"></script>
+</body>
+</html>

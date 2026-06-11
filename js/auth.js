@@ -159,68 +159,122 @@ function authFeedback(msg, ok = false) {
 
 /* ── Auth actions ── */
 async function doTeacherSignup() {
-  const name     = document.getElementById('signup-name')?.value.trim();
-  const email    = document.getElementById('signup-email')?.value.trim();
-  const password = document.getElementById('signup-password')?.value;
+  try {
+    const name     = document.getElementById('signup-name')?.value.trim();
+    const email    = document.getElementById('signup-email')?.value.trim();
+    const password = document.getElementById('signup-password')?.value;
 
-  if (!name || !email || !password) return authFeedback('Please fill in all fields.');
-  if (password.length < 8) return authFeedback('Password needs to be at least 8 characters.');
+    if (!name || !email || !password) return authFeedback('Please fill in all fields.');
+    if (password.length < 8) return authFeedback('Password needs to be at least 8 characters.');
 
-  const { data, error } = await sb.auth.signUp({ email, password });
-  if (error) return authFeedback(error.message);
+    authFeedback('Creating account...', true);
 
-  currentUser = data.user;
-  const { error: pErr } = await sb.from('profiles').insert({ id: currentUser.id, role: 'teacher', username: name });
-  if (pErr) return authFeedback('Account created but profile failed: ' + pErr.message);
+    let { data, error } = await sb.auth.signUp({ email, password });
+    if (error) {
+      if (error.message.toLowerCase().includes('already registered')) {
+        return authFeedback('This email is already registered — use the Log in tab instead. Logging in will finish any incomplete setup automatically.');
+      }
+      return authFeedback(error.message);
+    }
 
-  await loadProfile();
-  updateAccountNav();
-  buildAccount();
+    // If no session came back (e.g. email confirmation enabled), try signing in directly
+    if (!data.session) {
+      const r = await sb.auth.signInWithPassword({ email, password });
+      if (r.error) {
+        return authFeedback('Account created but login failed: ' + r.error.message +
+          '. If this mentions email confirmation, go to Supabase → Authentication → Sign In/Providers → Email and turn off "Confirm email", then delete the user in Authentication → Users and sign up again.');
+      }
+      data = r.data;
+    }
+
+    currentUser = data.user;
+    const { error: pErr } = await sb.from('profiles')
+      .upsert({ id: currentUser.id, role: 'teacher', username: name });
+    if (pErr) return authFeedback('Logged in, but saving your profile failed: ' + pErr.message);
+
+    await loadProfile();
+    updateAccountNav();
+    buildAccount();
+  } catch (e) {
+    authFeedback('Unexpected error: ' + e.message);
+  }
 }
 
 async function doTeacherLogin() {
-  const email    = document.getElementById('login-email')?.value.trim();
-  const password = document.getElementById('login-password')?.value;
-  if (!email || !password) return authFeedback('Please fill in both fields.');
+  try {
+    const email    = document.getElementById('login-email')?.value.trim();
+    const password = document.getElementById('login-password')?.value;
+    if (!email || !password) return authFeedback('Please fill in both fields.');
 
-  const { data, error } = await sb.auth.signInWithPassword({ email, password });
-  if (error) return authFeedback(error.message);
+    authFeedback('Logging in...', true);
 
-  currentUser = data.user;
-  await loadProfile();
-  updateAccountNav();
-  buildAccount();
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) {
+      if (error.message.toLowerCase().includes('email not confirmed')) {
+        return authFeedback('Your account was created while email confirmation was still on. Fix: in Supabase go to Authentication → Users, click your user, and choose "Confirm email" (or delete the user and sign up again now that confirmation is off).');
+      }
+      return authFeedback(error.message);
+    }
+
+    currentUser = data.user;
+    await loadProfile();
+
+    // Repair: if profile row is missing (incomplete signup), create it now
+    if (!currentProfile) {
+      const { error: pErr } = await sb.from('profiles')
+        .upsert({ id: currentUser.id, role: 'teacher', username: email.split('@')[0] });
+      if (pErr) return authFeedback('Logged in but profile setup failed: ' + pErr.message);
+      await loadProfile();
+    }
+
+    updateAccountNav();
+    buildAccount();
+  } catch (e) {
+    authFeedback('Unexpected error: ' + e.message);
+  }
 }
 
 async function doStudentJoin() {
-  const code     = document.getElementById('join-code')?.value.trim();
-  const username = document.getElementById('join-username')?.value.trim();
-  const password = document.getElementById('join-password')?.value;
+  try {
+    const code     = document.getElementById('join-code')?.value.trim();
+    const username = document.getElementById('join-username')?.value.trim();
+    const password = document.getElementById('join-password')?.value;
 
-  if (!code || !username || !password) return authFeedback('Please fill in all fields.');
-  if (password.length < 8) return authFeedback('Password needs to be at least 8 characters.');
-  if (username.replace(/[^a-zA-Z0-9]/g,'').length < 3) return authFeedback('Username needs at least 3 letters or numbers.');
+    if (!code || !username || !password) return authFeedback('Please fill in all fields.');
+    if (password.length < 8) return authFeedback('Password needs to be at least 8 characters.');
+    if (username.replace(/[^a-zA-Z0-9]/g,'').length < 3) return authFeedback('Username needs at least 3 letters or numbers.');
 
-  const email = studentEmail(username, code);
+    authFeedback('Joining class...', true);
 
-  const { data, error } = await sb.auth.signUp({ email, password });
-  if (error) {
-    if (error.message.includes('already registered')) return authFeedback('That username is taken in this class — try another.');
-    return authFeedback(error.message);
+    const email = studentEmail(username, code);
+
+    let { data, error } = await sb.auth.signUp({ email, password });
+    if (error) {
+      if (error.message.toLowerCase().includes('already registered')) return authFeedback('That username is taken in this class — try another, or use the Log in tab if it\'s yours.');
+      return authFeedback(error.message);
+    }
+
+    if (!data.session) {
+      const r = await sb.auth.signInWithPassword({ email, password });
+      if (r.error) return authFeedback('Account created but login failed: ' + r.error.message);
+      data = r.data;
+    }
+
+    currentUser = data.user;
+    const { error: pErr } = await sb.from('profiles')
+      .upsert({ id: currentUser.id, role: 'student', username });
+    if (pErr) return authFeedback('Profile setup failed: ' + pErr.message);
+
+    const { data: joinRes, error: jErr } = await sb.rpc('join_class', { p_code: code });
+    if (jErr) return authFeedback('Could not join class: ' + jErr.message);
+    if (joinRes && joinRes.success === false) return authFeedback(joinRes.error || 'Class code not found.');
+
+    await loadProfile();
+    updateAccountNav();
+    buildAccount();
+  } catch (e) {
+    authFeedback('Unexpected error: ' + e.message);
   }
-
-  currentUser = data.user;
-  const { error: pErr } = await sb.from('profiles').insert({ id: currentUser.id, role: 'student', username });
-  if (pErr) return authFeedback('Profile setup failed: ' + pErr.message);
-
-  // Join the class via secure function
-  const { data: joinRes, error: jErr } = await sb.rpc('join_class', { p_code: code });
-  if (jErr) return authFeedback('Could not join class: ' + jErr.message);
-  if (joinRes && joinRes.success === false) return authFeedback(joinRes.error || 'Class code not found.');
-
-  await loadProfile();
-  updateAccountNav();
-  buildAccount();
 }
 
 async function doStudentLogin() {

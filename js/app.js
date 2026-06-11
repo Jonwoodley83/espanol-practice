@@ -60,6 +60,7 @@ function switchMode(mode) {
   else if (mode === 'topics')      buildTopics();
   else if (mode === 'describe')    buildDescribe();
   else if (mode === 'aihomework') buildAIHomework();
+  else if (mode === 'account')     buildAccount();
   updateStats();
 }
 

@@ -93,6 +93,7 @@
   <button class="nav-btn" data-mode="describe" onclick="switchMode('describe')">🧍 Describe</button>
   <button class="nav-btn" data-mode="homework" onclick="switchMode('homework')">📝 Homework</button>
   <button class="nav-btn" data-mode="aihomework" onclick="switchMode('aihomework')">🤖 AI Test Builder</button>
+  <button class="nav-btn" data-mode="account" id="nav-account-btn" onclick="switchMode('account')" style="margin-left:auto;">👤 Account</button>
 </nav>
 
 <main>
@@ -127,8 +128,11 @@
   <div id="screen-describe"   class="screen"></div>
   <div id="screen-homework"    class="screen"></div>
   <div id="screen-aihomework" class="screen"></div>
+  <div id="screen-account"    class="screen"></div>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
 <script src="data/content.js"></script>
 <script src="js/app.js"></script>
 <script src="js/reference.js"></script>
@@ -138,5 +142,6 @@
 <script src="js/describe.js"></script>
 <script src="js/aihomework.js"></script>
 <script src="js/homework.js"></script>
+<script src="js/auth.js"></script>
 </body>
 </html>

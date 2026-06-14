@@ -30,9 +30,9 @@
         <span class="dd-item-icon">📚</span>
         <span><strong>Tense guide</strong><span class="dd-item-desc">All 8 tenses — reference &amp; examples</span></span>
       </button>
-      <button class="dd-item" onclick="switchMode('tense');closeDD('dd-tenses')">
-        <span class="dd-item-icon">🔍</span>
-        <span><strong>Tense spotter</strong><span class="dd-item-desc">Identify which tense is being used</span></span>
+      <button class="dd-item" onclick="switchMode('tensepractice');closeDD('dd-tenses')">
+        <span class="dd-item-icon">✍️</span>
+        <span><strong>Tense practice</strong><span class="dd-item-desc">Fill in the correct verb form</span></span>
       </button>
     </div>
   </div>
@@ -104,7 +104,7 @@
     </div>
     <div class="mode-grid">
       <div class="mode-card" onclick="switchMode('reference')"><div class="mode-icon">📚</div><div class="mode-title">Tense guide</div><div class="mode-desc">All 8 tenses — endings, examples, time words.</div></div>
-      <div class="mode-card" onclick="switchMode('tense')"><div class="mode-icon">🔍</div><div class="mode-title">Tense spotter</div><div class="mode-desc">Read a sentence and identify which tense is used.</div></div>
+      <div class="mode-card" onclick="switchMode('tensepractice')"><div class="mode-icon">✍️</div><div class="mode-title">Tense practice</div><div class="mode-desc">Fill in the correct verb form, organised by tense.</div></div>
       <div class="mode-card" onclick="switchMode('conjguide')"><div class="mode-icon">📖</div><div class="mode-title">Conjugation guide</div><div class="mode-desc">How conjugation works across all tenses.</div></div>
       <div class="mode-card" onclick="switchMode('conjugation')"><div class="mode-icon">🔤</div><div class="mode-title">Conjugation drill</div><div class="mode-desc">Four levels — present only up to all 8 tenses.</div></div>
       <div class="mode-card" onclick="switchMode('topics')"><div class="mode-icon">🗂️</div><div class="mode-title">Topics</div><div class="mode-desc">Vocabulary by theme — flashcards and quizzes.</div></div>
@@ -119,6 +119,7 @@
 
   <div id="screen-reference"   class="screen"></div>
   <div id="screen-tense"       class="screen"></div>
+  <div id="screen-tensepractice" class="screen"></div>
   <div id="screen-conjguide"   class="screen"></div>
   <div id="screen-conjugation" class="screen"></div>
   <div id="screen-topics"      class="screen"></div>
@@ -134,8 +135,10 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase-config.js"></script>
 <script src="data/content.js"></script>
+<script src="data/tensepractice.js"></script>
 <script src="js/app.js"></script>
 <script src="js/reference.js"></script>
+<script src="js/tensepractice.js"></script>
 <script src="js/conjguide.js"></script>
 <script src="js/topics.js"></script>
 <script src="js/verbhunt.js"></script>

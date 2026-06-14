@@ -51,6 +51,7 @@ function switchMode(mode) {
 
   if      (mode === 'conjugation') buildConjugation();
   else if (mode === 'tense')       buildTense();
+  else if (mode === 'tensepractice') buildTensePractice();
   else if (mode === 'builder')     buildBuilder();
   else if (mode === 'story')       buildStory();
   else if (mode === 'homework')    buildHomework();

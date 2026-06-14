@@ -43,33 +43,32 @@ alter table public.class_members enable row level security;
 
 create policy "students read own memberships" on public.class_members
   for select using (auth.uid() = student_id);
+
+-- Helper functions (security definer = bypass RLS, prevents policy recursion)
+create or replace function public.is_class_teacher(p_class_id uuid)
+returns boolean language sql security definer set search_path = public stable
+as $$ select exists (select 1 from classes c where c.id = p_class_id and c.teacher_id = auth.uid()); $$;
+
+create or replace function public.is_class_member(p_class_id uuid)
+returns boolean language sql security definer set search_path = public stable
+as $$ select exists (select 1 from class_members m where m.class_id = p_class_id and m.student_id = auth.uid()); $$;
+
+create or replace function public.teaches_student(p_student_id uuid)
+returns boolean language sql security definer set search_path = public stable
+as $$ select exists (select 1 from class_members m join classes c on c.id = m.class_id where m.student_id = p_student_id and c.teacher_id = auth.uid()); $$;
+
 create policy "teachers read their class members" on public.class_members
-  for select using (
-    exists (select 1 from public.classes c
-            where c.id = class_id and c.teacher_id = auth.uid())
-  );
+  for select using ( public.is_class_teacher(class_id) );
 create policy "teachers remove their class members" on public.class_members
-  for delete using (
-    exists (select 1 from public.classes c
-            where c.id = class_id and c.teacher_id = auth.uid())
-  );
+  for delete using ( public.is_class_teacher(class_id) );
 
 -- Students can read basic info about classes they belong to
 create policy "students read joined classes" on public.classes
-  for select using (
-    exists (select 1 from public.class_members m
-            where m.class_id = id and m.student_id = auth.uid())
-  );
+  for select using ( public.is_class_member(id) );
 
 -- Teachers can read profiles (usernames) of students in their classes
 create policy "teachers read their students" on public.profiles
-  for select using (
-    exists (
-      select 1 from public.class_members m
-      join public.classes c on c.id = m.class_id
-      where m.student_id = profiles.id and c.teacher_id = auth.uid()
-    )
-  );
+  for select using ( public.teaches_student(id) );
 
 -- ── Results: quiz scores (minimal data) ──
 create table public.results (
@@ -88,10 +87,7 @@ create policy "students insert own results" on public.results
 create policy "students read own results" on public.results
   for select using (auth.uid() = student_id);
 create policy "teachers read class results" on public.results
-  for select using (
-    exists (select 1 from public.classes c
-            where c.id = class_id and c.teacher_id = auth.uid())
-  );
+  for select using ( public.is_class_teacher(class_id) );
 
 -- ── Join a class by code (secure function) ──
 create or replace function public.join_class(p_code text)

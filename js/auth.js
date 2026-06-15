@@ -38,6 +38,17 @@ function updateAccountNav() {
   } else {
     btn.textContent = '👤 Account';
   }
+
+  // Teaching menu: visible only to logged-in teachers
+  const teaching = document.getElementById('dd-teaching');
+  if (teaching) {
+    const isTeacher = currentProfile && currentProfile.role === 'teacher';
+    teaching.style.display = isTeacher ? '' : 'none';
+    // If a non-teacher is somehow viewing a teaching screen, send them home
+    if (!isTeacher && (currentMode === 'homework' || currentMode === 'aihomework')) {
+      switchMode('home');
+    }
+  }
 }
 
 /* ── Main account screen ── */

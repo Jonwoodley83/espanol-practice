@@ -168,8 +168,8 @@ function renderTenseCard(key, g) {
         <!-- Practice button -->
         <div style="margin-top:1rem;">
           <button class="secondary" style="font-size:0.8rem;padding:6px 16px;"
-            onclick="switchMode('tense');tenseFilter={present:false,preterite:false,future:false,imperfect:false,perfect:false,conditional:false,subjunctive:false,pluperfect:false};tenseFilter['${key}']=true;buildTense();">
-            Practice ${g.name} in Tense Spotter →
+            onclick="switchMode('tensepractice');setTimeout(function(){ if(typeof openTenseQuizzes==='function' && TENSE_PRACTICE['${key}']) openTenseQuizzes('${key}'); },0);">
+            Practice ${g.name} in Tense Practice →
           </button>
         </div>
       </div>

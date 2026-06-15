@@ -15,7 +15,46 @@ let topicState = {
   quizScore: 0,
   quizTotal: 0,
   flipped: false,
+  quizContext: 'topics', // 'topics' | 'vocabtests' — where the quiz was launched from
 };
+
+/* ══════════════════════════════════════════════════════════
+   VOCABULARY TESTS — the quiz half of Topics, under the Tests menu.
+   Reuses the same quiz engine (startQuiz / renderQuizQuestion).
+══════════════════════════════════════════════════════════ */
+function buildVocabTests() {
+  const el = $('screen-vocabtests');
+  el.innerHTML = `
+    <div style="margin-bottom:1.5rem;">
+      <h2 style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:600;margin-bottom:0.4rem;">Vocabulary tests</h2>
+      <p style="color:var(--text2);font-size:0.9rem;max-width:560px;line-height:1.6;">
+        Multiple-choice quizzes on each topic. Pick a topic to test what you've learned —
+        study the word lists first under <strong>Topics</strong> in the Learn menu.
+      </p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;">
+      ${CONTENT.topics.map(t => `
+        <button onclick="startVocabTest('${t.id}')"
+          style="text-align:left;cursor:pointer;border:1px solid ${t.colour}44;background:${t.colour}12;
+                 border-radius:14px;padding:1.2rem;transition:all 0.15s;font-family:inherit;"
+          onmouseover="this.style.background='${t.colour}22';this.style.transform='translateY(-2px)'"
+          onmouseout="this.style.background='${t.colour}12';this.style.transform='none'">
+          <div style="font-size:1.6rem;margin-bottom:0.4rem;">${t.icon}</div>
+          <div style="font-size:1rem;font-weight:600;color:${t.colour};margin-bottom:0.2rem;">${t.title}</div>
+          <div style="font-size:0.72rem;color:var(--text3);">Quiz →</div>
+        </button>`).join('')}
+    </div>`;
+}
+
+function startVocabTest(topicId) {
+  const topic = CONTENT.topics.find(t => t.id === topicId);
+  if (!topic) return;
+  const allItems = topic.sections.flatMap(s => s.items);
+  topicState = { ...topicState, topicId, allItems, shuffled: shuffle([...allItems]), quizContext: 'vocabtests' };
+  startQuiz(topicId);
+}
+
+
 
 /* ── Entry point ── */
 function buildTopics() {
@@ -50,7 +89,7 @@ function openTopic(id) {
 
   // Flatten all items
   const allItems = topic.sections.flatMap(s => s.items);
-  topicState = { ...topicState, topicId: id, allItems, shuffled: shuffle([...allItems]), flipped: false };
+  topicState = { ...topicState, topicId: id, allItems, shuffled: shuffle([...allItems]), flipped: false, quizContext: 'topics' };
 
   const el = $('screen-topics');
   el.innerHTML = `
@@ -63,7 +102,7 @@ function openTopic(id) {
     </div>
 
     <!-- Mode selector -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1.5rem;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem;">
       <div onclick="startFlashcards('${id}','esToEn')"
         style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
                padding:1.25rem;cursor:pointer;text-align:center;transition:all 0.2s;"
@@ -82,15 +121,10 @@ function openTopic(id) {
         <div style="font-weight:500;color:var(--text);font-size:0.9rem;margin-bottom:3px;">Flashcards</div>
         <div style="font-size:0.75rem;color:var(--text3);">English → Spanish</div>
       </div>
-      <div onclick="startQuiz('${id}')"
-        style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
-               padding:1.25rem;cursor:pointer;text-align:center;transition:all 0.2s;"
-        onmouseover="this.style.borderColor='${topic.colour}'"
-        onmouseout="this.style.borderColor='var(--border)'">
-        <div style="font-size:1.5rem;margin-bottom:6px;">❓</div>
-        <div style="font-weight:500;color:var(--text);font-size:0.9rem;margin-bottom:3px;">Quiz</div>
-        <div style="font-size:0.75rem;color:var(--text3);">Multiple choice</div>
-      </div>
+    </div>
+
+    <div style="font-size:0.78rem;color:var(--text3);margin-bottom:1.25rem;text-align:center;">
+      Want to test yourself? Try <strong style="color:${topic.colour}">Vocabulary tests</strong> under the Tests menu.
     </div>
 
     <!-- Word list by section -->
@@ -220,13 +254,20 @@ function renderFlashcardComplete(topicId) {
       <p style="color:var(--text2);margin-bottom:1.5rem;">You've been through all ${topicState.allItems.length} cards.</p>
       <div class="btn-row" style="justify-content:center;">
         <button class="primary" style="background:${topic.colour};" onclick="startFlashcards('${topicId}','${topicState.direction}')">Go again</button>
-        <button class="secondary" onclick="startQuiz('${topicId}')">Try the quiz</button>
         <button class="secondary" onclick="openTopic('${topicId}')">Back</button>
       </div>
     </div>`;
 }
 
 /* ── Quiz mode ── */
+function quizScreenId() {
+  return topicState.quizContext === 'vocabtests' ? 'screen-vocabtests' : 'screen-topics';
+}
+function quizReturn() {
+  if (topicState.quizContext === 'vocabtests') buildVocabTests();
+  else openTopic(topicState.topicId);
+}
+
 function startQuiz(topicId) {
   topicState.mode      = 'quiz';
   topicState.shuffled  = shuffle([...topicState.allItems]);
@@ -254,11 +295,11 @@ function renderQuizQuestion(topicId) {
   let wrongPool = items.filter(i => i !== item);
   let wrongs    = shuffle(wrongPool).slice(0, 3).map(i => showEs ? i.en : i.es);
   const options = shuffle([answer, ...wrongs]);
-  const el      = $('screen-topics');
+  const el      = $(quizScreenId());
 
   el.innerHTML = `
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.25rem;flex-wrap:wrap;">
-      <button class="secondary" style="padding:6px 14px;font-size:0.8rem;" onclick="openTopic('${topicId}')">← Back</button>
+      <button class="secondary" style="padding:6px 14px;font-size:0.8rem;" onclick="quizReturn()">← Back</button>
       <div style="font-size:0.85rem;color:var(--text2);">${topic.icon} ${topic.title} — Quiz</div>
       <div style="margin-left:auto;font-size:0.82rem;color:var(--text3);">${idx+1} / ${Math.min(items.length,20)}</div>
     </div>
@@ -315,7 +356,7 @@ function renderQuizComplete(topicId) {
   const topic = CONTENT.topics.find(t => t.id === topicId);
   const pct   = Math.round((topicState.quizScore / topicState.quizTotal) * 100);
   const msg   = pct >= 90 ? '¡Excelente! 🌟' : pct >= 70 ? '¡Muy bien! 🎉' : pct >= 50 ? '¡Bien hecho!' : '¡Sigue practicando!';
-  const el    = $('screen-topics');
+  const el    = $(quizScreenId());
   el.innerHTML = `
     <div class="card" style="text-align:center;padding:2.5rem 1.5rem;">
       <div style="font-size:3rem;margin-bottom:0.5rem;">🏆</div>
@@ -324,8 +365,7 @@ function renderQuizComplete(topicId) {
       <p style="color:var(--text3);font-size:0.85rem;margin-bottom:1.5rem;">${msg}</p>
       <div class="btn-row" style="justify-content:center;">
         <button class="primary" style="background:${topic.colour};" onclick="startQuiz('${topicId}')">Try again</button>
-        <button class="secondary" onclick="startFlashcards('${topicId}','esToEn')">Flashcards</button>
-        <button class="secondary" onclick="openTopic('${topicId}')">Back</button>
+        <button class="secondary" onclick="quizReturn()">Back</button>
       </div>
     </div>`;
 }

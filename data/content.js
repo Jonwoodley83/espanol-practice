@@ -109,6 +109,17 @@ const CONTENT = {
       example: { verb:'hablar', forms:['había hablado','habías hablado','había hablado','habíamos hablado','habíais hablado','habían hablado'] },
       watchOut: 'Same irregular participles as perfect: hecho, dicho, visto, ido, sido, abierto, escrito, vuelto.'
     },
+    continuous: {
+      name: 'Present continuous',
+      fullName: 'Presente Continuo',
+      colour: '#4ec9c9',
+      rule: 'What is happening right now, in this moment. Like English "am/is/are doing".',
+      signals: ['ahora','ahora mismo','en este momento','mira','escucha'],
+      formation: 'estar (present) + gerund (–ando / –iendo)',
+      endings: { haver:['estoy','estás','está','estamos','estáis','están'], ar:'–ando', er_ir:'–iendo' },
+      example: { verb:'hablar', forms:['estoy hablando','estás hablando','está hablando','estamos hablando','estáis hablando','están hablando'] },
+      watchOut: 'Spelling-change gerunds: leer→leyendo, oír→oyendo, ir→yendo, decir→diciendo, venir→viniendo, poder→pudiendo, dormir→durmiendo.'
+    },
   },
 
   irregulars: ['ser','ir','tener','estar','hacer','querer','poder','saber','venir','decir','dar','poner'],

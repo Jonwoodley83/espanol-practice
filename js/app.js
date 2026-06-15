@@ -59,6 +59,7 @@ function switchMode(mode) {
   else if (mode === 'conjguide')   buildConjGuide();
   else if (mode === 'verbhunt')    buildVerbHunt();
   else if (mode === 'topics')      buildTopics();
+  else if (mode === 'vocabtests')  buildVocabTests();
   else if (mode === 'describe')    buildDescribe();
   else if (mode === 'aihomework') buildAIHomework();
   else if (mode === 'account')     buildAccount();

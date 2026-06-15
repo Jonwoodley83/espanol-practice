@@ -103,21 +103,38 @@
 
 <main>
   <div id="screen-home" class="screen active">
-    <div class="hero">
-      <h1>Practice your<br><span>Spanish</span></h1>
-      <p>Verbs, tenses, and sentences — reinforcing exactly what you've been learning in class.</p>
+    <div class="hero-band">
+      <div class="hb-greeting">¡Hola! Welcome back</div>
+      <h1>Ready to practise<br>your <span>Spanish</span>?</h1>
+      <p>Guides, drills and games — reinforcing exactly what you've been learning in class. Pick up where you left off or explore something new.</p>
+      <div class="hero-cta-row">
+        <button class="hero-cta hero-cta-primary" onclick="switchMode('tensepractice')">Continue practising</button>
+        <button class="hero-cta hero-cta-secondary" onclick="document.getElementById('home-activities').scrollIntoView({behavior:'smooth'})">Browse everything</button>
+      </div>
     </div>
-    <div class="mode-grid">
-      <div class="mode-card" onclick="switchMode('reference')"><div class="mode-icon">📚</div><div class="mode-title">Tense guide</div><div class="mode-desc">All 9 tenses — endings, examples, time words.</div></div>
-      <div class="mode-card" onclick="switchMode('tensepractice')"><div class="mode-icon">✍️</div><div class="mode-title">Tense practice</div><div class="mode-desc">Fill in the correct verb form, organised by tense.</div></div>
-      <div class="mode-card" onclick="switchMode('conjguide')"><div class="mode-icon">📖</div><div class="mode-title">Conjugation guide</div><div class="mode-desc">How conjugation works across all tenses.</div></div>
-      <div class="mode-card" onclick="switchMode('conjugation')"><div class="mode-icon">🔤</div><div class="mode-title">Conjugation drill</div><div class="mode-desc">Four levels — present only up to all 8 tenses.</div></div>
-      <div class="mode-card" onclick="switchMode('topics')"><div class="mode-icon">🗂️</div><div class="mode-title">Topics</div><div class="mode-desc">Vocabulary by theme — word lists and flashcards.</div></div>
-      <div class="mode-card" onclick="switchMode('vocabtests')"><div class="mode-icon">📝</div><div class="mode-title">Vocabulary tests</div><div class="mode-desc">Multiple-choice quizzes on each topic.</div></div>
-      <div class="mode-card" onclick="switchMode('builder')"><div class="mode-icon">🧩</div><div class="mode-title">Sentence builder</div><div class="mode-desc">Arrange tiles into the correct Spanish sentence.</div></div>
-      <div class="mode-card" onclick="switchMode('verbhunt')"><div class="mode-icon">🎯</div><div class="mode-title">Verb hunt</div><div class="mode-desc">50 verb tiles — five modes of play.</div></div>
-      <div class="mode-card" onclick="switchMode('story')"><div class="mode-icon">📖</div><div class="mode-title">Mini story</div><div class="mode-desc">Choose the right verb form as the story unfolds.</div></div>
-      <div class="mode-card" onclick="switchMode('describe')"><div class="mode-icon">🧍</div><div class="mode-title">Describe the person</div><div class="mode-desc">A random character appears — describe 10 things about them in Spanish.</div></div>
+
+    <div id="home-activities">
+      <div class="group-heading"><span class="gh-icon">📖</span> Learn</div>
+      <div class="mode-grid">
+        <div class="mode-card" onclick="switchMode('reference')"><div class="mode-icon">📚</div><div class="mode-title">Tense guide</div><div class="mode-desc">All 9 tenses — endings, examples, time words.</div></div>
+        <div class="mode-card" onclick="switchMode('conjguide')"><div class="mode-icon">📖</div><div class="mode-title">Conjugation guide</div><div class="mode-desc">How conjugation works across all tenses.</div></div>
+        <div class="mode-card" onclick="switchMode('topics')"><div class="mode-icon">🗂️</div><div class="mode-title">Topics</div><div class="mode-desc">Vocabulary by theme — word lists and flashcards.</div></div>
+      </div>
+
+      <div class="group-heading"><span class="gh-icon">✍️</span> Tests</div>
+      <div class="mode-grid">
+        <div class="mode-card" onclick="switchMode('tensepractice')"><div class="mode-icon">✍️</div><div class="mode-title">Tense practice</div><div class="mode-desc">Fill in the correct verb form, by tense.</div></div>
+        <div class="mode-card" onclick="switchMode('conjugation')"><div class="mode-icon">🔤</div><div class="mode-title">Conjugation drill</div><div class="mode-desc">Four difficulty levels across the tenses.</div></div>
+        <div class="mode-card" onclick="switchMode('vocabtests')"><div class="mode-icon">📝</div><div class="mode-title">Vocabulary tests</div><div class="mode-desc">Multiple-choice quizzes on each topic.</div></div>
+      </div>
+
+      <div class="group-heading"><span class="gh-icon">🎮</span> Games</div>
+      <div class="mode-grid">
+        <div class="mode-card" onclick="switchMode('verbhunt')"><div class="mode-icon">🎯</div><div class="mode-title">Verb hunt</div><div class="mode-desc">50 verb tiles — five modes of play.</div></div>
+        <div class="mode-card" onclick="switchMode('builder')"><div class="mode-icon">🧩</div><div class="mode-title">Sentence builder</div><div class="mode-desc">Arrange tiles into the correct sentence.</div></div>
+        <div class="mode-card" onclick="switchMode('story')"><div class="mode-icon">📖</div><div class="mode-title">Mini story</div><div class="mode-desc">Choose the right verb as the story unfolds.</div></div>
+        <div class="mode-card" onclick="switchMode('describe')"><div class="mode-icon">🧍</div><div class="mode-title">Describe the person</div><div class="mode-desc">Describe a random character in Spanish.</div></div>
+      </div>
     </div>
   </div>
 

@@ -510,6 +510,69 @@ button.secondary:hover { border-color: rgba(255,255,255,0.2); color: var(--text)
   text-align: center;
   padding: 3rem 0 2rem;
 }
+
+/* Hero band — welcome panel at top of home */
+.hero-band {
+  background: linear-gradient(135deg, rgba(232,168,56,0.16), rgba(91,156,246,0.10));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2.5rem 2rem;
+  margin: 1.5rem 0 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-band .hb-greeting {
+  font-size: 0.85rem;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.5rem;
+}
+.hero-band h1 {
+  font-family: 'Fraunces', serif;
+  font-size: 2.4rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 0.6rem;
+}
+.hero-band h1 span { color: var(--accent); font-style: italic; }
+.hero-band p {
+  color: var(--text2);
+  font-size: 0.95rem;
+  max-width: 460px;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+.hero-cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-cta {
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 500;
+  padding: 11px 22px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.18s;
+}
+.hero-cta-primary { background: var(--accent); color: var(--bg); }
+.hero-cta-primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.hero-cta-secondary { background: transparent; border-color: var(--border); color: var(--text2); }
+.hero-cta-secondary:hover { border-color: rgba(255,255,255,0.25); color: var(--text); }
+
+/* Group heading on home */
+.group-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 1.75rem 0 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text3);
+}
+.group-heading .gh-icon { font-size: 1rem; }
+
 .hero h1 {
   font-family: 'Fraunces', serif;
   font-size: 3rem;
@@ -528,9 +591,9 @@ button.secondary:hover { border-color: rgba(255,255,255,0.2); color: var(--text)
 
 .mode-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 12px;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 .mode-card {
   background: var(--bg2);
@@ -601,7 +664,10 @@ button.secondary:hover { border-color: rgba(255,255,255,0.2); color: var(--text)
 @media (max-width: 520px) {
   header { padding: 1rem; }
   main { padding: 1.25rem 1rem 3rem; }
-  .mode-grid { grid-template-columns: 1fr; }
+  .mode-grid { grid-template-columns: 1fr 1fr; }
+  .hero-band { padding: 1.75rem 1.25rem; }
+  .hero-band h1 { font-size: 1.8rem; }
+  .hero-cta { flex: 1; text-align: center; }
   .tense-ref { grid-template-columns: 1fr; }
   .options { grid-template-columns: 1fr; }
   .options.cols3 { grid-template-columns: 1fr; }

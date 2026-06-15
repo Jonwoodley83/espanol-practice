@@ -465,7 +465,7 @@ const CONTENT = {
         gerundio: '–ar → –ando, –er/–ir → –iendo (special: leer→leyendo, oír→oyendo, ir→yendo)',
       },
       rows: [
-        { present:'ha escuchado',         pretPerf:'ha escuchado',     gerundio:'está escuchando',    infinitive:'escuchar',   meaning:'to listen',          subject:'él/ella',   given:'pretPerf' },
+        { present:'escucha',              pretPerf:'ha escuchado',     gerundio:'está escuchando',    infinitive:'escuchar',   meaning:'to listen',          subject:'él/ella',   given:'pretPerf' },
         { present:'esperamos',            pretPerf:'hemos esperado',   gerundio:'estamos esperando',  infinitive:'esperar',    meaning:'to wait/hope',       subject:'nosotros',  given:'present' },
         { present:'estoy viendo',         pretPerf:'he visto',         gerundio:'estoy viendo',       infinitive:'ver',        meaning:'to see/watch',       subject:'yo',        given:'gerundio', note:'ver is irregular: visto' },
         { present:'está creando',         pretPerf:'ha creado',        gerundio:'está creando',       infinitive:'crear',      meaning:'to create',          subject:'él/ella',   given:'gerundio' },
@@ -477,7 +477,7 @@ const CONTENT = {
         { present:'traduzco',             pretPerf:'he traducido',     gerundio:'estoy traduciendo',  infinitive:'traducir',   meaning:'to translate',       subject:'yo',        given:'gerundio' },
         { present:'abrís',                pretPerf:'habéis abierto',   gerundio:'estáis abriendo',    infinitive:'abrir',      meaning:'to open',            subject:'vosotros',  given:'pretPerf', note:'abrir is irregular: abierto' },
         { present:'creemos',              pretPerf:'hemos creído',     gerundio:'estamos creyendo',   infinitive:'creer',      meaning:'to believe',         subject:'nosotros',  given:'present', note:'creer: leyendo-style spelling change' },
-        { present:'has querido',          pretPerf:'has querido',      gerundio:'estás queriendo',    infinitive:'querer',     meaning:'to want/love',       subject:'tú',        given:'pretPerf', note:'querer is irregular: querido' },
+        { present:'quieres',              pretPerf:'has querido',      gerundio:'estás queriendo',    infinitive:'querer',     meaning:'to want/love',       subject:'tú',        given:'pretPerf', note:'querer is irregular: querido' },
         { present:'vamos',                pretPerf:'hemos ido',        gerundio:'estamos yendo',      infinitive:'ir',         meaning:'to go',              subject:'nosotros',  given:'present', note:'ir is irregular: ido; gerundio: yendo' },
         { present:'hacen',                pretPerf:'han hecho',        gerundio:'están haciendo',     infinitive:'hacer',      meaning:'to do/make',         subject:'ellos',     given:'gerundio', note:'hacer is irregular: hecho' },
         { present:'conozco',              pretPerf:'he conocido',      gerundio:'estoy conociendo',   infinitive:'conocer',    meaning:'to know (people)',   subject:'yo',        given:'pretPerf' },

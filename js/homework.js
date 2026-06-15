@@ -104,9 +104,9 @@ function renderVerbTable(test) {
           <tr style="border-bottom:1px solid var(--border);">
             <th style="padding:8px 10px;text-align:left;font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;width:28px;">#</th>
             <th style="padding:8px 10px;text-align:left;font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;">Verb</th>
-            <th style="padding:8px 10px;text-align:left;font-size:0.72rem;color:var(--present);text-transform:uppercase;letter-spacing:0.05em;">Presente</th>
-            <th style="padding:8px 10px;text-align:left;font-size:0.72rem;color:var(--preterite);text-transform:uppercase;letter-spacing:0.05em;">Pret. Perfecto</th>
-            <th style="padding:8px 10px;text-align:left;font-size:0.72rem;color:var(--future);text-transform:uppercase;letter-spacing:0.05em;">Gerundio (–ing)</th>
+            <th style="padding:8px 10px;text-align:left;font-size:0.72rem;color:var(--present);text-transform:uppercase;letter-spacing:0.05em;">Presente<br><span style="font-size:0.62rem;opacity:0.6;">present</span></th>
+            <th style="padding:8px 10px;text-align:left;font-size:0.72rem;color:var(--preterite);text-transform:uppercase;letter-spacing:0.05em;">Pasado<br><span style="font-size:0.62rem;opacity:0.6;">pret. perfecto</span></th>
+            <th style="padding:8px 10px;text-align:left;font-size:0.72rem;color:var(--future);text-transform:uppercase;letter-spacing:0.05em;">P. Continuous<br><span style="font-size:0.62rem;opacity:0.6;">gerundio · –ing</span></th>
           </tr>
         </thead>
         <tbody id="verb-table-body">
